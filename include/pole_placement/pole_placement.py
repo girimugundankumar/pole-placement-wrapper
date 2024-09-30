@@ -58,3 +58,27 @@
 # * GitHub:    https://github.com/girimugundankumar/pole-placement-wrapper.git
 # **********************************************************************************************************************/
 
+# pole_placement.py
+import numpy as np
+from scipy.signal import place_poles
+
+# Function to calculate the gain matrix. 
+# @input : A, B real Matrices
+#          P a complex matrix - If you need real poles set imaginary parts to 0's in the inputs in the wrapper
+# @output: K - Gain Matrix
+#          Computed Poles
+# NOTE   : The wrapper can be modified for other outputs as well. I don't need them so I haven't coded them in.
+def calculate_gain_matrix( A, B, P, method = "YT", rtol = 1e-3, maxiter = 30):
+    # Boost.Python handles the conversion from inputs to numpy arrays as needed.
+
+    # Use place_poles to calculate the feedback gain matrix K
+    result = place_poles(A, B, P, method, rtol, maxiter)
+
+    # The gain matrix K
+    K = result.gain_matrix
+
+    # Placed poles
+    placed_poles = result.computed_poles
+
+    # Return the gain matrix and the placed poles
+    return K, placed_poles
