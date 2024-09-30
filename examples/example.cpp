@@ -53,28 +53,58 @@ int main() {
          0, 1, 0,
          0, 0, 1;
 
-    P << std::complex<double>(-25, 0), 
+    // Complex poles should always have conjugate pairs
+    P << std::complex<double>(-25, -1), 
          std::complex<double>(-24, 0),
-         std::complex<double>(-18, 0);
+         std::complex<double>(-25, 1);
 
-    /* Compute the gains with the default YT method and the rtol and iteration values
-    If you need KNV0 you can pass a string "KNV0" after the P value.
-    Likewise you can change the tolerance and the maximum number of iterations respectively. 
-    Look to pole_placement.hpp for more information. */
+    
     
     // Initialize the pole placement object
     PolePlacementWrapper ppw;
 
-    // Compute the gains
-    auto result = ppw.calculate_gain_matrix(A,B,P);
+    // Compute the gains and placed poles
+    // If you only want the gains - ignore the second output like so
+    // auto [gains, _] = ppw.calculate_gain_matrix(A,B,P);
+    // Please note that the gains are odered according to the rearranged Poles P (acending order), 
+    // print out the placed_poles to double check your result.
+    auto [gains, placed_poles] = ppw.calculate_gain_matrix(A,B,P);
 
-    // Get the gains
-    auto gains = std::get<0>(result);
+    std::cout << "===== For Complex Poles ===== \n" << std::endl;
     std::cout << "Gain Matrix: \n" << gains << std::endl;
+    std::cout << "Placed Poles: \n" << placed_poles << std::endl;
 
-    // Get the placed poles
-    auto placed_poled = std::get<1>(result);
-    std::cout << "Placed Poles: \n" << placed_poled << std::endl;
+
+    // Define AA, BB matrices and desired poles PP
+    Eigen::MatrixXd AA(4, 4);
+    Eigen::MatrixXd BB(4, 2);
+    Eigen::VectorXd PP(4);
+
+    AA << 1.380,  -0.2077,  6.715, -5.676,
+         -0.5814, -4.290,   0,      0.6750,
+         1.067,   4.273,  -6.654,  5.893,
+         0.0480,  4.273,   1.343, -2.104;
+
+    BB << 0,      5.679 ,
+        1.136,    1.136,
+         0,        0,
+        -3.146,  0;
+
+    PP << -0.2, -0.5, -5.0566, -8.6659;
+
+    // Compute the gains with the default YT method and the rtol and iteration values
+    // If you need KNV0 you can pass a string "KNV0" after the P value. Note that KNV0 only works with real poles
+    // Likewise you can change the tolerance and the maximum number of iterations respectively. 
+    // Look to pole_placement.hpp for more information.
+
+    // Initialize the pole placement object
+    // PolePlacementWrapper ppw;
+
+    auto [gains2, placed_poles2] = ppw.calculate_gain_matrix(AA,BB,PP, "KNV0");
+
+    std::cout << "===== For Real Poles =====\n" << std::endl;
+    std::cout << "Gain Matrix: \n" << gains2 << std::endl;
+    std::cout << "Placed Poles: \n" << placed_poles2 << std::endl;
 
     return 0;
 }

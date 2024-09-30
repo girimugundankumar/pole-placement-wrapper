@@ -87,14 +87,6 @@ def calculate_gain_matrix(A, B, P, method="YT", rtol=1e-3, maxiter=30):
     placed_poles : numpy.ndarray
         The computed poles.
     """
-    
-    # Validate input shapes
-    if not (isinstance(A, np.ndarray) and A.ndim == 2):
-        raise ValueError("Matrix A must be a 2D numpy array.")
-    if not (isinstance(B, np.ndarray) and B.ndim == 2):
-        raise ValueError("Matrix B must be a 2D numpy array.")
-    if not (isinstance(P, np.ndarray) and P.ndim == 1):
-        raise ValueError("P must be a 1D numpy array of poles.")
 
     # Use place_poles to calculate the feedback gain matrix K
     result = place_poles(A, B, P, method, rtol, maxiter)
