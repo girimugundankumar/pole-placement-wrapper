@@ -1,0 +1,8 @@
+#ignore all directories with the name build
+build/
+
+#ignore all directories with the name .vscode
+.vscode/
+
+#ignore the pycache
+include/pole_placement/__pycache__/
