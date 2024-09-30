@@ -1,4 +1,0 @@
-# include eigen libraries
-[submodule "libeigen"]
-path = include/eigen
-url = https://gitlab.com/libeigen/eigen.git
