@@ -29,4 +29,44 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # ======================================================================================================================
 
+cmake_minimum_required(VERSION 3.8)
+project(pole_placement)
 
+# Set C and C++ standards
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 99)
+endif()
+
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
+
+# Enable warnings for GCC or Clang
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# Find Boost and Python packages
+find_package(Boost 1.86 REQUIRED COMPONENTS filesystem python numpy)
+find_package(PythonLibs REQUIRED)
+
+# Include directories
+include_directories(${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS})
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/pole_placement/
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/eigen/
+)
+
+# Set source files for the example
+set(EXAMPLE_SOURCE_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/examples/example.cpp
+)
+
+# Add the executable for the example
+add_executable(pole_placement_example ${EXAMPLE_SOURCE_FILES})
+
+# Link the example executable with Boost/Python libraries
+target_link_libraries(pole_placement_example ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
+
+# Install Python script
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/pole_placement/pole_placement.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

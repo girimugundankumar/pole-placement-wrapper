@@ -62,14 +62,39 @@
 import numpy as np
 from scipy.signal import place_poles
 
-# Function to calculate the gain matrix. 
-# @input : A, B real Matrices
-#          P a complex matrix - If you need real poles set imaginary parts to 0's in the inputs in the wrapper
-# @output: K - Gain Matrix
-#          Computed Poles
-# NOTE   : The wrapper can be modified for other outputs as well. I don't need them so I haven't coded them in.
-def calculate_gain_matrix( A, B, P, method = "YT", rtol = 1e-3, maxiter = 30):
-    # Boost.Python handles the conversion from inputs to numpy arrays as needed.
+def calculate_gain_matrix(A, B, P, method="YT", rtol=1e-3, maxiter=30):
+    """
+    Calculate the feedback gain matrix K using pole placement.
+
+    Parameters:
+    A : numpy.ndarray
+        The system state matrix (real).
+    B : numpy.ndarray
+        The input matrix (real).
+    P : numpy.ndarray
+        The desired poles (complex). 
+        Note: For real poles, set imaginary parts to zero.
+    method : str, optional
+        The method used for pole placement. Default is "YT".
+    rtol : float, optional
+        The relative tolerance for convergence. Default is 1e-3.
+    maxiter : int, optional
+        The maximum number of iterations for convergence. Default is 30.
+
+    Returns:
+    K : numpy.ndarray
+        The calculated gain matrix.
+    placed_poles : numpy.ndarray
+        The computed poles.
+    """
+    
+    # Validate input shapes
+    if not (isinstance(A, np.ndarray) and A.ndim == 2):
+        raise ValueError("Matrix A must be a 2D numpy array.")
+    if not (isinstance(B, np.ndarray) and B.ndim == 2):
+        raise ValueError("Matrix B must be a 2D numpy array.")
+    if not (isinstance(P, np.ndarray) and P.ndim == 1):
+        raise ValueError("P must be a 1D numpy array of poles.")
 
     # Use place_poles to calculate the feedback gain matrix K
     result = place_poles(A, B, P, method, rtol, maxiter)
