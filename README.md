@@ -130,11 +130,10 @@ The [CMakeLists.txt](https://github.com/girimugundankumar/pole-placement-wrapper
 
 If you plan on integrating the code into your existing codebase, in your C++ code, you will need to append the directory containing the Python module to sys.path. Modify the following code snippet in `pole_placement.hpp` to ensure the correct path to your Python module:
 
-```
+```cpp
 // Append the directory containing the Python module to sys.path
 p::object sys = p::import("sys");
 sys.attr("path").attr("append")("../include/pole_placement/");
-
 ```
 
 > **Important:** You may need to change the "../include/pole_placement/" path to reflect the correct location of the Python module based on your project's directory structure. The path provided must be the relative path from the directory where the executable is located. For this example, the path is given relative to the `build` directory where the executable is located.
