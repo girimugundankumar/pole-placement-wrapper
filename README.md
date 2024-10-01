@@ -67,7 +67,9 @@ ldconfig -p | grep boost_python
 ### 1. Clone the repository
 
 ```bash
-# Clone wherever you need -- the recursive clones Eigen 3.40 too. If you already have it you can remove the tag to clone recursively
+# Clone wherever you need -- the recursive clones Eigen 3.40 too.
+# If you already have Eigen in your codebase you can remove the tag to clone recursively 
+# and modify the CMakeLists.txt to add the correct location of Eigen
 git clone --recursive https://github.com/girimugundankumar/pole-placement-wrapper.git
 
 # cd into the package
@@ -123,6 +125,20 @@ If you see this output, the code works correctly.
 ## 📄 CMake Integration
 
 The [CMakeLists.txt](https://github.com/girimugundankumar/pole-placement-wrapper/blob/main/CMakeLists.txt) file includes all the necessary library dependencies, so you can easily integrate this package into your project.
+
+## 🔗 Integration
+
+If you plan on integrating the code into your existing codebase, in your C++ code, you will need to append the directory containing the Python module to sys.path. Modify the following code snippet in `pole_placement.hpp` to ensure the correct path to your Python module:
+
+```
+// Append the directory containing the Python module to sys.path
+p::object sys = p::import("sys");
+sys.attr("path").attr("append")("../include/pole_placement/");
+
+```
+
+> **Important:** You may need to change the "../include/pole_placement/" path to reflect the correct location of the Python module based on your project's directory structure. The path provided must be the relative path from the directory where the executable is located. For this example, the path is given relative to the `build` directory where the executable is located.
+
 
 ## 📝 License
 
