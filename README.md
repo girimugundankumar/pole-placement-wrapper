@@ -67,7 +67,7 @@ ldconfig -p | grep boost_python
 ### 1. Clone the repository
 
 ```bash
-# Clone wherever you need
+# Clone wherever you need -- the recursive clones Eigen 3.40 too. If you already have it you can remove the tag to clone recursively
 git clone --recursive https://github.com/girimugundankumar/pole-placement-wrapper.git
 
 # cd into the package
@@ -95,6 +95,7 @@ make
 When you run the example file, the output should be:
 
 ```bash
+===== For Complex Poles ===== 
 Gain Matrix: 
 15.6   -0   -0
   -0 17.8   -1
