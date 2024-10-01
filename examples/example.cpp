@@ -102,7 +102,7 @@ int main() {
 
     auto [gains2, placed_poles2] = ppw.calculate_gain_matrix(AA,BB,PP, "KNV0");
 
-    std::cout << "===== For Real Poles =====\n" << std::endl;
+    std::cout << "\n===== For Real Poles =====\n" << std::endl;
     std::cout << "Gain Matrix: \n" << gains2 << std::endl;
     std::cout << "Placed Poles: \n" << placed_poles2 << std::endl;
 
